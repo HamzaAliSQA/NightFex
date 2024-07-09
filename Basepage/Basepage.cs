@@ -50,7 +50,36 @@ namespace NightFexDemo
                 Console.WriteLine($"{stepdetail} Not Found ");
             }
         }
-        public async Task Assertion(IPage page, string selector, string expText, string stepdetail="")
+        public async Task Assertion(IPage page, string selector,int expvalue, string stepdetail="")
+        {
+            var element = await page.WaitForSelectorAsync(selector);
+            if (element == null)
+            {
+                Assert.Fail($"No element found with selector: {selector}");
+                return; // Ensure we do not proceed further if the element is null
+            }
+            var actualText = await element.InnerTextAsync();
+            int actualValue;
+            if (int.TryParse(actualText, out actualValue))
+            {
+                if (actualValue == expvalue)
+                {
+                    Assert.AreEqual(expvalue, actualValue);
+                    Console.WriteLine($"Expected value: {expvalue} matches the actual value: {actualValue}.");
+                    //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
+                }
+                else
+                {
+                    Assert.AreEqual(expvalue, actualValue);
+                    Console.WriteLine($"Expected value: {expvalue} does not match the actual value: {actualValue}.");
+                }
+            }
+            else
+            {
+                Assert.Fail($"Unable to parse element text '{actualText}' as integer.");
+            }
+        }
+        public async Task Assertion(IPage page, string selector, string expText, string stepdetail = "")
         {
             var element = await page.WaitForSelectorAsync(selector);
             if (element == null)
@@ -62,12 +91,15 @@ namespace NightFexDemo
             var actualText = await element.InnerTextAsync();
             if (actualText == expText)
             {
-                Assert.That(actualText, Is.EqualTo(expText), $"Expected text: {expText} matches the actual text: {actualText}.");
+                Assert.That(actualText, Is.EqualTo(expText));
+                Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText}.");
                 //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
+
             }
             else
             {
-                Assert.That(actualText, Is.Not.EqualTo(expText), $"Expected text: {expText} does not match the actual text: {actualText}.");
+                Assert.That(actualText, Is.Not.EqualTo(expText));
+                Console.WriteLine($"Expected text: {expText} does not match the actual text: {actualText}.");
             }
         }
         public async Task Keyboardaction(IPage page, string action)
