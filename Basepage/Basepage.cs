@@ -62,12 +62,12 @@ namespace NightFexDemo
             var actualText = await element.InnerTextAsync();
             if (actualText == expText)
             {
-                Assert.That(actualText, Is.EqualTo(expText), "Expected text matches the actual text.");
+                Assert.That(actualText, Is.EqualTo(expText), $"Expected text: {expText} matches the actual text: {actualText}.");
                 //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
             }
             else
             {
-                Assert.That(actualText, Is.Not.EqualTo(expText), "Expected text does not match the actual text.");
+                Assert.That(actualText, Is.Not.EqualTo(expText), $"Expected text: {expText} does not match the actual text: {actualText}.");
             }
         }
         public async Task Keyboardaction(IPage page, string action)
