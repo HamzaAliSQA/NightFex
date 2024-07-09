@@ -16,7 +16,8 @@ namespace NightFexDemo
             await bp.Write(page, "//input[@placeholder='Username']", "TEST12", "username");
             await bp.Write(page, "//input[@placeholder='Password']", "N1234F", "password");
             await bp.Click(page, "//input[contains(@class,'ui-button')]", "LoginButton");
-            await Task.Delay(10000);
+            await Task.Delay(30000);
         }
+
     }
 }

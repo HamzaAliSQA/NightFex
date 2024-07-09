@@ -17,6 +17,8 @@ namespace NightFexDemo
             await login.Login(Page);
             await dashboard.dashboard(Page);
             await Task.Delay(3000);
+
+
         }
     }
 }
