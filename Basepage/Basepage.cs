@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace NightFexDemo
 {
     public class Basepage
     {
+        public int num;
+
         public async Task Goto(IPage page,string url)
         {
             await page.GotoAsync(url);
@@ -79,6 +82,43 @@ namespace NightFexDemo
                 Assert.Fail($"Unable to parse element text '{actualText}' as integer.");
             }
         }
+
+        public async Task htmlExtractor(IPage page, string selector, string stepdetails = "")
+        {
+
+            var element = await page.WaitForSelectorAsync(selector);
+            if (element == null)
+            {
+                Console.WriteLine("Element not found");
+            }
+            else
+            {
+                var actualText = await element.InnerTextAsync();
+                num = int.Parse(actualText);
+                Console.WriteLine($"number: {num}");
+            }
+
+        }
+        public async Task CountValue(IPage page, string selector, string stepdetails = "")
+        {
+            var element = await page.WaitForSelectorAsync(selector);
+            if (element == null)
+            {
+                Console.WriteLine("Element not found");
+            }
+            var rows = await element.QuerySelectorAllAsync(selector);
+            if (rows == null)
+            {
+                Console.WriteLine("Not Found");
+            }
+            else
+            {
+                int totalRows = rows.Count;
+                Console.WriteLine($"Total Rows:{totalRows}");
+
+            }
+        }
+
         public async Task Assertion(IPage page, string selector, string expText, string stepdetail = "")
         {
             var element = await page.WaitForSelectorAsync(selector);

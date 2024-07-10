@@ -32,10 +32,15 @@ namespace NightFexDemo
             Console.WriteLine($"Days Worked This Month: {daysWorked}");
             Console.WriteLine($"Days Left This Month: {daysLeft}");
             
+            //Days Month
             await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]", daysInMonth, "Current Month of Days");
-            //var element = await page.WaitForSelectorAsync("//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]");
-            //var actualText = await element.InnerTextAsync();
-            //Console.WriteLine(actualText);
+            
+            //Days Worked
+            await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", daysWorked, "Days of Worked");
+
+            //Days Left
+            await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", daysLeft, "Days Left");
+
 
         }
     }
