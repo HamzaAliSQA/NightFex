@@ -20,7 +20,6 @@ namespace NightFexDemo
             await Task.Delay(3000);
             await delivered.SalesDelivered(Page);
             await Task.Delay(5000);
-
         }
     }
 }

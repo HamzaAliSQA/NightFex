@@ -95,18 +95,21 @@ namespace NightFexDemo
             {
                 var actualText = await element.InnerTextAsync();
                 num = int.Parse(actualText);
-                Console.WriteLine($"number: {num}");
+                //Console.WriteLine($"number: {num}");
             }
 
         }
-        public async Task CountValue(IPage page, string selector, string stepdetails = "")
+        public async Task CountValue(IPage page, string tableRowSelector, string stepdetails = "")
         {
-            var element = await page.WaitForSelectorAsync(selector);
+            // Wait for the table rows to be available in the DOM
+            var element = await page.WaitForSelectorAsync(tableRowSelector);
             if (element == null)
             {
                 Console.WriteLine("Element not found");
+                return;
             }
-            var rows = await element.QuerySelectorAllAsync(selector);
+            // Query all rows within the table
+            var rows = await page.QuerySelectorAllAsync(tableRowSelector);
             if (rows == null)
             {
                 Console.WriteLine("Not Found");
@@ -114,8 +117,7 @@ namespace NightFexDemo
             else
             {
                 int totalRows = rows.Count;
-                Console.WriteLine($"Total Rows:{totalRows}");
-
+                Console.WriteLine($"Delivered Number number: {num} is equal to total number of rows: {totalRows}");
             }
         }
 
@@ -179,3 +181,4 @@ namespace NightFexDemo
         }
     }
 }
+
