@@ -51,9 +51,13 @@ namespace NightFexDemo
             
             await bp.Click(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]/a", "Deivered");
 
-            //For BreadCrumps
-            await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
-            await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
+                Console.WriteLine("breadcrumbs clicked");
+            }
             //Rows count
             await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "count value");
             //close the screen
@@ -66,18 +70,120 @@ namespace NightFexDemo
             await bp.Assertion(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", bp.num, "not delivered count");
             await bp.Click(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]/a","not delivered");
 
-            //For BreadCrumps
-            //await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
-            //await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
-            //Console.WriteLine("breadcrumbs clicked");
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
+                Console.WriteLine("breadcrumbs clicked");
+            }
 
             //Rows count
-            await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "count value");
+            await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "Not delivered row count");
 
             //close the screen
             await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
 
         }
+        public async Task Saved(IPage page)
+        {
+            await bp.htmlExtractor(page, "//th[text() ='Saved']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]");
+            Console.WriteLine("Saved Numbers");
+            await bp.Assertion(page, "//th[text() ='Saved']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", bp.num, "saved count");
+            await bp.Click(page, "//th[text() ='Saved']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]/a", "saved clicked");
 
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
+                Console.WriteLine("breadcrumbs clicked");
+            }
+
+            //Rows count
+            await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "saved row count");
+
+            //close the screen
+            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+        }
+        public async Task Closed(IPage page)
+        {
+            await bp.htmlExtractor(page, "//th[text() ='Closed']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]");
+            Console.WriteLine("Closed Numbers");
+            await bp.Assertion(page, "//th[text() ='Closed']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]", bp.num, "Closed count");
+            await bp.Click(page, "//th[text() ='Closed']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]/a", "Closed clicked");
+
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
+                Console.WriteLine("breadcrumbs clicked");
+            }
+
+            //Rows count
+            await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "saved row count");
+
+            //close the screen
+            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+        }
+        public async Task Finalized(IPage page)
+        {
+            await bp.htmlExtractor(page, "//th[text() ='Finalized']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]");
+            Console.WriteLine("Finalized Numbers");
+            await bp.Assertion(page, "//th[text() ='Finalized']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]", bp.num, "Finalized count");
+            await bp.Click(page, "//th[text() ='Finalized']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]/a", "Finalized clicked");
+                //For BreadCrumps
+                await bp.Wait(4000);
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
+                Console.WriteLine("breadcrumbs clicked");
+            //}
+
+            //Rows count
+            await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "Finalized row count");
+
+            //close the screen
+            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+        }
+
+        public async Task Funded(IPage page)
+        {
+            await bp.htmlExtractor(page, "//th[text() ='Funded']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[6]");
+            Console.WriteLine("Funded Numbers");
+            await bp.Assertion(page, "//th[text() ='Funded']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[6]", bp.num, "Funded count");
+            await bp.Click(page, "//th[text() ='Funded']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[6]/a", "Funded number");
+                //For BreadCrumps
+                await bp.Wait(4000);
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
+                Console.WriteLine("breadcrumbs clicked");
+
+            //Rows count
+            await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "Funded rows count");
+
+            //close the screen
+            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+        }
+        public async Task NotFunded(IPage page)
+        {
+            await bp.htmlExtractor(page, "//th[text() ='Not Funded']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[7]");
+            Console.WriteLine("Not Funded Numbers");
+            await bp.Assertion(page, "//th[text() ='Not Funded']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[7]", bp.num, "Not Funded count");
+            await bp.Click(page, "//th[text() ='Not Funded']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[7]/a", "Not Funded number");
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='100']/parent::li");
+                Console.WriteLine("breadcrumbs clicked");
+            }
+            
+            //Rows count
+            await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "Not Funded rows count");
+
+            //close the screen
+            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+        }
     }
 }

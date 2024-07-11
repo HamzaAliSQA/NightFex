@@ -104,7 +104,7 @@ namespace NightFexDemo
         public async Task CountValue(IPage page, string tableRowSelector, string stepdetails = "")
         {
             // Wait for the table rows to be available in the DOM
-            var element = await page.WaitForSelectorAsync(tableRowSelector);
+             var element = await page.WaitForSelectorAsync(tableRowSelector);
             if (element == null)
             {
                 Console.WriteLine("Element not found");
@@ -112,14 +112,28 @@ namespace NightFexDemo
             }
             // Query all rows within the table
             var rows = await page.QuerySelectorAllAsync(tableRowSelector);
-            if (rows == null)
+            if (rows == null )
             {
-                Console.WriteLine("Not Found");
+                Console.WriteLine("Rows Not Found");
             }
             else
             {
                 int totalRows = rows.Count;
-                Console.WriteLine($"Delivered Number: {num} is equal to total number of rows: {totalRows}");
+                bool noRecordsFound = false;
+                foreach (var row in rows)
+                {
+                    var textContent = await row.TextContentAsync();
+                    if (textContent != null && textContent.Contains("No records found"))
+                    {
+                        noRecordsFound = true;
+                        break;
+                    }
+                }
+                if (noRecordsFound)
+                {
+                    totalRows = 0;
+                }
+                Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
             }
         }
 
@@ -138,7 +152,6 @@ namespace NightFexDemo
                 Assert.That(actualText, Is.EqualTo(expText));
                 Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText}.");
                 //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
-
             }
             else
             {
