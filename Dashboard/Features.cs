@@ -1,4 +1,5 @@
 ﻿using Microsoft.Playwright;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +63,7 @@ namespace NightFexDemo
             await bp.CountValue(page, "//th[text() ='Date ']/following-sibling::th[text()='Type ']/parent::tr/parent::thead/following-sibling::tbody//tr", "count value");
             //close the screen
             await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+        
         }
         public async Task NotDelivered(IPage page)
         {
@@ -85,12 +87,32 @@ namespace NightFexDemo
             await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
 
         }
+<<<<<<< Updated upstream
         public async Task Saved(IPage page)
         {
             await bp.htmlExtractor(page, "//th[text() ='Saved']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]");
             Console.WriteLine("Saved Numbers");
             await bp.Assertion(page, "//th[text() ='Saved']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", bp.num, "saved count");
             await bp.Click(page, "//th[text() ='Saved']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]/a", "saved clicked");
+=======
+        public async Task ExistingCustomers(IPage page)
+        {
+            //Get the first value
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]", "count");
+            
+            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td/a", "Existing Customers");
+            await Task.Delay(4000);
+            
+            //Rows Count
+            await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "count value");
+
+            //close the screen
+            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+            await Task.Delay(2000);
+
+        }
+
+>>>>>>> Stashed changes
 
             if (bp.num > 25)
             {

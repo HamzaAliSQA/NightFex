@@ -15,6 +15,7 @@ namespace NightFexDemo
         public async Task dashboard(IPage page)
         {
             await features.Days(page);
+<<<<<<< Updated upstream
            // await features.SalesDelivered(page);
            // await features.NotDelivered(page);
            // await features.Saved(page);
@@ -22,6 +23,12 @@ namespace NightFexDemo
             await features.Finalized(page);
             await features.Funded(page);
            // await features.NotFunded(page);
+=======
+            //await features.SalesDelivered(page);
+            //await features.NotDelivered(page);
+            await features.ExistingCustomers(page);
+            
+>>>>>>> Stashed changes
         }
     }
 }

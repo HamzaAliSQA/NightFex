@@ -11,6 +11,7 @@ namespace NightFexDemo
     public class Basepage
     {
         public int num;
+        public int num2;
 
         public async Task Goto(IPage page,string url)
         {
@@ -137,6 +138,50 @@ namespace NightFexDemo
             }
         }
 
+        public async Task CountValue2(IPage page, string tableRowSelector, string stepdetails = "")
+        {
+            // Wait for the table rows to be available in the DOM
+            var element = await page.WaitForSelectorAsync(tableRowSelector);
+            if (element == null)
+            {
+                Console.WriteLine("Element not found");
+                return;
+            }
+            // Query all rows within the table
+            var rows = await page.QuerySelectorAllAsync(tableRowSelector);
+            if (rows == null)
+            {
+                Console.WriteLine("Not Found");
+            }
+            else
+            {
+
+                int totalRows = rows.Count;
+                Console.WriteLine($"Delivered Number:{num2} is equal to total number of rows: {totalRows}");
+            }
+        }
+        public async Task ExtractFirstValue(IPage page, string selector, string stepdetail = "")
+        {
+            var element = await page.WaitForSelectorAsync(selector);
+            if (element == null)
+            {
+                Console.WriteLine("Element not found");
+                return;
+            }
+            var actualText = await element.InnerTextAsync();
+            if (actualText == null)
+            {
+                Console.WriteLine("not found");
+            }
+            else
+            {
+                var trimmedText = actualText.Split('/')[0].Trim();
+                if (int.TryParse(trimmedText, out num2))
+                {
+                    Console.WriteLine(trimmedText);
+                }             
+            }
+        }
         public async Task Assertion(IPage page, string selector, string expText, string stepdetail = "")
         {
             var element = await page.WaitForSelectorAsync(selector);
@@ -178,6 +223,7 @@ namespace NightFexDemo
                 await page.Keyboard.PressAsync("Enter");
             }
         }
+       
         public async Task Wait(int wait)
         {
             await Task.Delay(wait);
@@ -194,6 +240,7 @@ namespace NightFexDemo
                 //await extent.TakeScreenshot(page, Status.Fail);
             }
         }
+
     }
 }
 
