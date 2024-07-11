@@ -23,6 +23,7 @@ namespace NightFexDemo
             if (locator != null)
             {
                 await locator.FillAsync(text);
+                Console.WriteLine($"{stepdetail} field is filled");
             }
             else
             {
@@ -47,6 +48,7 @@ namespace NightFexDemo
             if (locator != null)
             {
                 await locator.ClickAsync();
+                Console.WriteLine($"{stepdetail} field is Clicked");
             }
             else
             {
@@ -117,7 +119,7 @@ namespace NightFexDemo
             else
             {
                 int totalRows = rows.Count;
-                Console.WriteLine($"Delivered Number number: {num} is equal to total number of rows: {totalRows}");
+                Console.WriteLine($"Delivered Number: {num} is equal to total number of rows: {totalRows}");
             }
         }
 
