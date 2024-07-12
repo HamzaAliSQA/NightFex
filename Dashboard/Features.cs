@@ -185,23 +185,5 @@ namespace NightFexDemo
             //close the screen
             await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
         }
-        public async Task ExistingCustomers(IPage page)
-        {
-            //Get the first value
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]", "count");
-
-            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td/a", "Existing Customers");
-            await Task.Delay(4000);
-
-            //Rows Count
-            await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "count value");
-
-            //close the screen
-            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
-            await Task.Delay(2000);
-
-        }
-
     }
 }
- 

@@ -133,17 +133,8 @@ namespace NightFexDemo
                 {
                     totalRows = 0;
                 }
-                else if(num > 0)
-                {
-                   Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
-                }
-                else
-                {
-                    Console.WriteLine($"total number of rows: {totalRows}");
-
-                }
+                Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
             }
-
         }
 
         public async Task Assertion(IPage page, string selector, string expText, string stepdetail = "")
@@ -201,28 +192,6 @@ namespace NightFexDemo
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
                 //await extent.TakeScreenshot(page, Status.Fail);
-            }
-        }
-        public async Task ExtractFirstValue(IPage page, string selector, string stepdetail = "")
-        {
-            var element = await page.WaitForSelectorAsync(selector);
-            if (element == null)
-            {
-                Console.WriteLine("Element not found");
-                return;
-            }
-            var actualText = await element.InnerTextAsync();
-            if (actualText == null)
-            {
-                Console.WriteLine("not found");
-            }
-            else
-            {
-                var trimmedText = actualText.Split('/')[0].Trim();
-                if (int.TryParse(trimmedText, out int num2))
-                {
-                    Console.WriteLine(trimmedText);
-                }
             }
         }
     }
