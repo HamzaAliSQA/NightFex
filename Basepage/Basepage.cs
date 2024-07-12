@@ -12,7 +12,7 @@ namespace NightFexDemo
     {
         public int num;
 
-        public async Task Goto(IPage page,string url)
+        public async Task Goto(IPage page, string url)
         {
             await page.GotoAsync(url);
         }
@@ -55,7 +55,7 @@ namespace NightFexDemo
                 Console.WriteLine($"{stepdetail} Not Found ");
             }
         }
-        public async Task Assertion(IPage page, string selector,int expvalue, string stepdetail="")
+        public async Task Assertion(IPage page, string selector, int expvalue, string stepdetail = "")
         {
             var element = await page.WaitForSelectorAsync(selector);
             if (element == null)
@@ -104,7 +104,7 @@ namespace NightFexDemo
         public async Task CountValue(IPage page, string tableRowSelector, string stepdetails = "")
         {
             // Wait for the table rows to be available in the DOM
-             var element = await page.WaitForSelectorAsync(tableRowSelector);
+            var element = await page.WaitForSelectorAsync(tableRowSelector);
             if (element == null)
             {
                 Console.WriteLine("Element not found");
@@ -112,7 +112,7 @@ namespace NightFexDemo
             }
             // Query all rows within the table
             var rows = await page.QuerySelectorAllAsync(tableRowSelector);
-            if (rows == null )
+            if (rows == null)
             {
                 Console.WriteLine("Rows Not Found");
             }

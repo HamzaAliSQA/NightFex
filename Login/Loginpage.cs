@@ -1,4 +1,5 @@
 ﻿using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NightFexDemo
 {
-    public class Loginpage
+    public class Loginpage 
     {
         Basepage bp = new Basepage();
         public async Task Login(IPage page)
@@ -18,6 +19,5 @@ namespace NightFexDemo
             await bp.Click(page, "//input[contains(@class,'ui-button')]", "LoginButton");
             await Task.Delay(30000);
         }
-
     }
 }

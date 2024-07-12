@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -11,6 +12,28 @@ namespace NightFexDemo
     public class Features
     {
         Basepage bp = new Basepage();
+
+        public async Task tabsnumber(IPage page)
+        {
+            var elementHandle = await page.QuerySelectorAsync("//button[text() =' (74)']"); // Replace with your actual selector
+            if (elementHandle != null)
+            {
+                var originalText = await elementHandle.TextContentAsync();
+                if (!string.IsNullOrEmpty(originalText))
+                {
+                    // Extract the number using regular expression
+                    var match = Regex.Match(originalText, @"\((\d+)\)");
+                    string trimmedValue = match.Success ? match.Groups[1].Value : string.Empty;
+                    int Value = int.Parse(trimmedValue);
+                    Console.WriteLine("Trimmed Value: " + Value);
+                    
+                    //await bp.htmlExtractor(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/a");
+                    //Console.WriteLine("Delivered Numbers");
+                    //yahn Bp.num or trimmedvalue ko assert kreana hai
+                    await bp.Assertion(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/a", Value, "assertion of July Tab and Combined val,");
+                }
+            }
+        }
         public async Task Days(IPage page)
         {
             DateTime currentDate = DateTime.Now;
@@ -49,9 +72,9 @@ namespace NightFexDemo
             Console.WriteLine("Delivered Numbers");
             await bp.Assertion(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]",bp.num,"count");
             
-            await bp.Click(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]/a", "Deivered");
+            await bp.Click(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]/a", "Delivered");
 
-            if (bp.num > 25)
+            if (bp.num >= 25)
             {
                 //For BreadCrumps
                 await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
