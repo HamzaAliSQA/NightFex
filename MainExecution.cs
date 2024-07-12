@@ -6,7 +6,7 @@ namespace NightFexDemo
     {
         Loginpage login = new Loginpage();
         Dashboard dashboard = new Dashboard();
-        
+
         [SetUp]
         public void Setup()
         {
