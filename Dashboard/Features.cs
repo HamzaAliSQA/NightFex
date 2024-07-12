@@ -130,7 +130,7 @@ namespace NightFexDemo
         public async Task Finalized(IPage page)
         {
             await bp.htmlExtractor(page, "//th[text() ='Finalized']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]");
-            Console.WriteLine("Finalized Numbers");
+            Console.WriteLine("Finalized No");
             await bp.Assertion(page, "//th[text() ='Finalized']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]", bp.num, "Finalized count");
             await bp.Click(page, "//th[text() ='Finalized']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]/a", "Finalized clicked");
                 //For BreadCrumps
