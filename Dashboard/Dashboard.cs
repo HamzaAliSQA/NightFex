@@ -12,6 +12,7 @@ namespace NightFexDemo
     {
         Basepage bp = new Basepage();
         Features features = new Features();
+        Header header = new Header();
         public async Task dashboard(IPage page)
         {
             await features.Days(page);
@@ -20,9 +21,11 @@ namespace NightFexDemo
            // await features.NotDelivered(page);
            // await features.Saved(page);
            // await features.Closed(page);
-           // await features.Finalized(page);
-           // await features.Funded(page);
-           // await features.NotFunded(page); 
+            //await features.Finalized(page);
+            //await features.Funded(page);
+           // await features.NotFunded(page);
+            //await features.ExistingCustomers(page);
+            await header.Headers(page);
         }
     }
 }
