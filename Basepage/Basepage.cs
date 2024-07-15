@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -70,7 +71,7 @@ namespace NightFexDemo
                 if (actualValue == expvalue)
                 {
                     Assert.AreEqual(expvalue, actualValue);
-                    Console.WriteLine($"Expected value: {expvalue} matches the actual value: {actualValue}.");
+                    Console.WriteLine($"Expected value: {expvalue} matches the actual value: {actualValue}, {stepdetail}");
                     //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
                 }
                 else
@@ -159,13 +160,34 @@ namespace NightFexDemo
             if (actualText == expText)
             {
                 Assert.That(actualText, Is.EqualTo(expText));
-                Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText}.");
+                Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText}");
                 //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
             }
             else
             {
                 Assert.That(actualText, Is.Not.EqualTo(expText));
                 Console.WriteLine($"Expected text: {expText} does not match the actual text: {actualText}.");
+            }
+        }
+
+        public async Task tabsnumber(IPage page, string Tabloc, string radiobtnLoc, string grandTtloc, string assert1Des, string assert2Des)
+        {
+            var elementHandle = await page.QuerySelectorAsync(Tabloc); // Replace with your actual selector
+            if (elementHandle != null)
+            {
+                var originalText = await elementHandle.TextContentAsync();
+                if (!string.IsNullOrEmpty(originalText))
+                {
+                    // Extract the number using regular expression
+                    var match = Regex.Match(originalText, @"\((\d+)\)");
+                    string trimmedValue = match.Success ? match.Groups[1].Value : string.Empty;
+                    int Value = int.Parse(trimmedValue);
+                    Console.WriteLine("Trimmed Value: " + Value);
+                    await Click(page, "//button[text()='Show Sources']", "Showsources button");
+                    
+                    await Assertion(page, radiobtnLoc, Value, assert1Des);
+                    await Assertion(page, grandTtloc, Value, assert2Des);
+                }
             }
         }
         public async Task Keyboardaction(IPage page, string action)
