@@ -13,27 +13,15 @@ namespace NightFexDemo
     {
         Basepage bp = new Basepage();
 
-        public async Task tabsnumber(IPage page)
+
+
+       
+        public async Task TabNumbersAssertion(IPage page)
         {
-            var elementHandle = await page.QuerySelectorAsync("//button[text() =' (74)']"); // Replace with your actual selector
-            if (elementHandle != null)
-            {
-                var originalText = await elementHandle.TextContentAsync();
-                if (!string.IsNullOrEmpty(originalText))
-                {
-                    // Extract the number using regular expression
-                    var match = Regex.Match(originalText, @"\((\d+)\)");
-                    string trimmedValue = match.Success ? match.Groups[1].Value : string.Empty;
-                    int Value = int.Parse(trimmedValue);
-                    Console.WriteLine("Trimmed Value: " + Value);
-                    
-                    //await bp.htmlExtractor(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/a");
-                    //Console.WriteLine("Delivered Numbers");
-                    //yahn Bp.num or trimmedvalue ko assert kreana hai
-                    await bp.Assertion(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/a", Value, "assertion of July Tab and Combined val,");
-                }
-            }
+            await bp.tabsnumber(page, "//span[text() ='July']//parent::button", "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/a", "//span[text() =' Grand Total ']/parent::td/parent::tr/parent::thead//following-sibling::tbody/tr[2]/td/span[2]", "assertion of July Tab and Combined val", "assertion of July Tab and grand Total Unit");
         }
+
+
         public async Task Days(IPage page)
         {
             DateTime currentDate = DateTime.Now;
@@ -224,6 +212,7 @@ namespace NightFexDemo
             await Task.Delay(2000);
 
         }
+        
 
     }
 }
