@@ -183,8 +183,7 @@ namespace NightFexDemo
                     string trimmedValue = match.Success ? match.Groups[1].Value : string.Empty;
                     int Value = int.Parse(trimmedValue);
                     Console.WriteLine("Trimmed Value: " + Value);
-                    await Click(page, "//button[text()='Show Sources']", "Showsources button");
-                    
+                   
                     await Assertion(page, radiobtnLoc, Value, assert1Des);
                     await Assertion(page, grandTtloc, Value, assert2Des);
                 }
