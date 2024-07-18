@@ -12,12 +12,12 @@ namespace NightFexDemo
         {
         }
 
+      
         [Test]
-        public async Task NightFex()
+        public async Task NightFaxLogin()
         {
             await login.Login(Page);
             await dashboard.dashboard(Page);
-            
         }
     }
 }

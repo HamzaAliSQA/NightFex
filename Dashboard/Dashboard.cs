@@ -16,15 +16,16 @@ namespace NightFexDemo
         public async Task dashboard(IPage page)
         {
             await features.Days(page);
-           // await features.SalesDelivered(page);
-           // await features.NotDelivered(page);
-           // await features.Saved(page);
-           // await features.Closed(page);
+            await features.TabNumbersAssertion(page);
+            //await features.SalesDelivered(page);
+            //await features.NotDelivered(page);
+            //await features.Saved(page);
+            //await features.Closed(page);
             //await features.Finalized(page);
             //await features.Funded(page);
-           // await features.NotFunded(page);
+            //await features.NotFunded(page);
             //await features.ExistingCustomers(page);
-            await header.Headers(page);
+            //await header.Headers(page);
         }
     }
 }

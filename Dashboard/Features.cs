@@ -1,8 +1,9 @@
-﻿using Microsoft.Playwright;
+﻿        using Microsoft.Playwright;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -11,6 +12,24 @@ namespace NightFexDemo
     public class Features
     {
         Basepage bp = new Basepage();
+
+
+
+       
+        public async Task TabNumbersAssertion(IPage page)
+        {
+            await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
+            
+            //give xpath of desired radio button for assertion of sales
+            await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/input");
+            await bp.Wait(4000);
+            //Month Tab => New/Used radio button => GrandTotal tab
+            await bp.tabsnumber(page, "//span[text() ='July']//parent::button", "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/a", "//span[text() =' Grand Total ']/parent::td/parent::tr/parent::thead//following-sibling::tbody/tr[2]/td/span[2]", "assertion of July Tab and Combined val", "assertion of July Tab and grand Total Unit");
+            
+            
+        }
+
+
         public async Task Days(IPage page)
         {
             DateTime currentDate = DateTime.Now;
@@ -49,9 +68,9 @@ namespace NightFexDemo
             Console.WriteLine("Delivered Numbers");
             await bp.Assertion(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]",bp.num,"count");
             
-            await bp.Click(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]/a", "Deivered");
+            await bp.Click(page, "//th[text() ='Delivered']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]/a", "Delivered");
 
-            if (bp.num > 25)
+            if (bp.num >= 25)
             {
                 //For BreadCrumps
                 await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
@@ -201,6 +220,7 @@ namespace NightFexDemo
             await Task.Delay(2000);
 
         }
+        
 
     }
 }
