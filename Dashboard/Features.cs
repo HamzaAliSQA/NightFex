@@ -1,4 +1,4 @@
-﻿using Microsoft.Playwright;
+﻿        using Microsoft.Playwright;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,15 @@ namespace NightFexDemo
        
         public async Task TabNumbersAssertion(IPage page)
         {
+            await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
+            
+            //give xpath of desired radio button for assertion of sales
+            await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/input");
+            await bp.Wait(4000);
+            //Month Tab => New/Used radio button => GrandTotal tab
             await bp.tabsnumber(page, "//span[text() ='July']//parent::button", "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/a", "//span[text() =' Grand Total ']/parent::td/parent::tr/parent::thead//following-sibling::tbody/tr[2]/td/span[2]", "assertion of July Tab and Combined val", "assertion of July Tab and grand Total Unit");
+            
+            
         }
 
 
