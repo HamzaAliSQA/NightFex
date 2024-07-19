@@ -71,6 +71,10 @@ namespace NightFexDemo
             //Profile Drpdwn
             await bp.Click(page, "//div[@class ='pull-right pd-zero headNav']//ul[3]//li[10]//section", "Profile");
             await bp.Wait(6000);
+           
+            await bp.Click(page, "//div[@class ='pull-right pd-zero headNav']//ul[3]//li[10]//ul//li[10]//a//i", "Logout");
+           
+            await bp.Assertion(page, "//div[@class ='pull-right pd-zero headNav']//ul[3]//li[10]//ul//li[10]//a//i", "Logout");
 
 
         }

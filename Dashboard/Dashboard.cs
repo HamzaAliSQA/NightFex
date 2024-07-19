@@ -16,8 +16,6 @@ namespace NightFexDemo
         public async Task dashboard(IPage page)
         {
             await features.Days(page);
-            await features.MTD_NewCustomers(page);
-            //await features.MTD_ExistingCustomers(page);
             //await features.TabNumbersAssertion(page);
             //await features.SalesDelivered(page);
             //await features.NotDelivered(page);

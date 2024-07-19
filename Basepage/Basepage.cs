@@ -120,6 +120,7 @@ namespace NightFexDemo
             else
             {
                 int totalRows = rows.Count;
+                
                 bool noRecordsFound = false;
                 foreach (var row in rows)
                 {
@@ -136,6 +137,7 @@ namespace NightFexDemo
                 }
                 else if(num > 0)
                 {
+                    
                    Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
                 }
                 else
@@ -185,6 +187,10 @@ namespace NightFexDemo
                    
                     await Assertion(page, radiobtnLoc, Value, assert1Des);
                     await Assertion(page, grandTtloc, Value, assert2Des);
+                }
+                else
+                {
+                    Console.WriteLine("Does not match the value");
                 }
             }
         }
