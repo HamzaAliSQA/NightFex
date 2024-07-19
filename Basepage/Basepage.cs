@@ -141,7 +141,6 @@ namespace NightFexDemo
                 else
                 {
                     Console.WriteLine($"total number of rows: {totalRows}");
-
                 }
             }
 
@@ -240,9 +239,9 @@ namespace NightFexDemo
             else
             {
                 var trimmedText = actualText.Split('/')[0].Trim();
-                if (int.TryParse(trimmedText, out int num2))
+                if (int.TryParse(trimmedText, out num))
                 {
-                    Console.WriteLine(trimmedText);
+                    Console.WriteLine($"Trimmed Value: {num}");
                 }
             }
         }
