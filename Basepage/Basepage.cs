@@ -78,7 +78,7 @@ namespace NightFexDemo
                 else
                 {
                     Assert.AreEqual(expvalue, actualValue);
-                    Console.WriteLine($"Expected value: {expvalue} does not match the actual value: {actualValue}.");
+                    Console.WriteLine($"Expected value: {expvalue} does not match the actual value: {actualValue}, {stepdetail}.");
                 }
             }
             else
@@ -103,7 +103,7 @@ namespace NightFexDemo
             }
 
         }
-        public async Task CountValue(IPage page, string tableRowSelector, string stepdetails = "")
+        public async Task CountValue(IPage page, string tableRowSelector, string nextpage = "", string stepdetails = "")
         {
             // Wait for the table rows to be available in the DOM
             var element = await page.WaitForSelectorAsync(tableRowSelector);
@@ -136,19 +136,31 @@ namespace NightFexDemo
                 {
                     totalRows = 0;
                 }
-                else if (num > 0)
-                {
 
-                    Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
+                else if (num > 0 && num < 1000)
+                {
+                    await TextAssertion(page,num,totalRows);
+                    //Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
+                }
+                else if (num >= 1001 && num <= 20000)
+                {
+                    await SimpleClick(page, nextpage);
+                    await Wait(4000);
+                    var elem = await page.WaitForSelectorAsync(tableRowSelector);
+                    var nextPageRows = await page.QuerySelectorAllAsync(tableRowSelector);
+                    int nextpagecount = nextPageRows.Count;
+                    totalRows += nextpagecount;
+                    await TextAssertion(page, num, totalRows);
+                    //Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
                 }
                 else
                 {
                     Console.WriteLine($"total number of rows: {totalRows}");
-
                 }
             }
-
         }
+
+
 
         public async Task Assertion(IPage page, string selector, string expText, string stepdetail = "")
         {
@@ -172,6 +184,21 @@ namespace NightFexDemo
                 Console.WriteLine($"Expected text: {expText} does not match the actual text: {actualText}.");
             }
         }
+        public async Task TextAssertion(IPage page, int actualText, int expText, string stepdetail = "")
+        {
+            if (actualText == expText)
+            {
+                Assert.That(actualText, Is.EqualTo(expText));
+                Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText}");
+                //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
+            }
+            else
+            {
+                Assert.That(actualText, Is.Not.EqualTo(expText));
+                Console.WriteLine($"Expected text: {expText} does not match the actual text: {actualText}.");
+            }
+        }
+
 
         public async Task tabsnumber(IPage page, string Tabloc, string radiobtnLoc, string grandTtloc, string assert1Des, string assert2Des)
         {
@@ -299,6 +326,7 @@ namespace NightFexDemo
                 {
                     var number = match.Value;
                     Console.WriteLine(number);
+
                 }
             }
         }

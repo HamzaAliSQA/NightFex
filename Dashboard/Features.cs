@@ -20,10 +20,13 @@ namespace NightFexDemo
             Console.WriteLine("\n1: NEW / USED table Fields Assertions:");
 
             //give xpath of desired radio button for assertion of sales
-            await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/input");
+            await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/input");
             await bp.Wait(4000);
 
             //Month Tab => New/Used radio button => GrandTotal tab
+
+            await bp.tabsnumber(page, "//span[text() ='July']//parent::button", "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/a", "//span[text() =' Grand Total ']/parent::td/parent::tr/parent::thead//following-sibling::tbody/tr[2]/td/span[2]", "assertion of July Tab and Combined val", "assertion of July Tab and grand Total Unit");
+
             await bp.tabsnumber(page, "//span[text() ='July']//parent::button", "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[1]/div/a", "//span[text() =' Grand Total ']/parent::td/parent::tr/parent::thead//following-sibling::tbody/tr[2]/td/span[2]", "assertion of July Tab and Combined val", "assertion of July Tab and grand Total Unit");
             await bp.Wait(5000);
 
@@ -260,6 +263,7 @@ namespace NightFexDemo
             int daysWorked = (currentDate - firstDayOfMonth).Days ;
             int daysLeft = (lastDayOfMonth - currentDate).Days ;
 
+
             // Print the results
             Console.WriteLine($"Days Worked This Month: {daysWorked}");
             Console.WriteLine($"Days Left This Month: {daysLeft}");
@@ -427,9 +431,57 @@ namespace NightFexDemo
             await bp.Click(page, "//h3[text() ='CIT: Age Filter (in days)']/parent::div//following-sibling::ul/li[1]", "Age filter");
             await Task.Delay(4000);
             await bp.ExtractFirstValue(page, "//h4[text() ='Age Filter']/parent::div//parent::div//following-sibling::div//ul//li[1]//following-sibling::span","Matches the value");
-
-
         }
+      
+        public async Task MTD_ExistingCustomers(IPage page)
+        {
+            await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
+
+            //give xpath of desired radio button for assertion of sales
+            await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/input");
+            await bp.Wait(4000);
+            Console.WriteLine("MTD Existing Customer Sales");
+            //Get the first value
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]", "MTD Existing Cust count");
+
+            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]/a", "MTD Existing Customers");
+            await bp.Wait(4000);
+          
+            //Rows Count
+            await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "MTD count value");
+
+            //close the screen
+            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+            
+        }
+        public async Task MTD_NewCustomers(IPage page)
+        {
+            //Get the first value
+            Console.WriteLine("New Customer Sales");
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", "MTD New Cust count");
+          
+            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]/a", "MTD New Customers");
+            await Task.Delay(4000);
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                Console.WriteLine("breadcrumbs clicked");
+                await bp.SimpleClick(page,"//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='500']/parent::li");
+                await bp.Wait(4000);
+                //Rows Count
+                await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "MTD New Cust count value");
+                
+                //close the screen
+                await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                await Task.Delay(2000);
+            }
+            else
+            {
+                Console.WriteLine("New Customer Field not found");
+            }
+        }
+
 
         public async Task TotalTradeIn(IPage page)
         {
@@ -494,6 +546,96 @@ namespace NightFexDemo
 
             Console.WriteLine("\nTOP SALES MANAGER");
             await bp.CountValue(page, "//th[text() ='User Name ']/parent::tr/parent::thead//following-sibling::tbody//tr/td[text() ='1']", "Top sales Manager");
+        }
+                
+
+        //>>>>>>>>>>XXXXXXXXX<<<<<<<<<<<<<<<<<
+        public async Task YTD_ExistingCustomers(IPage page)
+        {
+            //await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
+
+            //give xpath of desired radio button for assertion of sales
+            //await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/input");
+            //await bp.Wait(4000);
+            //Get the first value
+            Console.WriteLine("YTD Existing Customer Sales");
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", "YTD Existing Cust count");
+
+            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]/a", "YTD New Customers");
+            await Task.Delay(4000);
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                Console.WriteLine("breadcrumbs clicked");
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='500']/parent::li");
+                await bp.Wait(4000);
+                //Rows Count
+                await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "YTD New Cust count value");
+
+                //close the screen
+                await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                await Task.Delay(2000);
+            }
+            else
+            {
+                Console.WriteLine("New Customer Field not found");
+            }
+        }
+        public async Task YTD_NewCustomers(IPage page)
+        {
+            
+            //Get the first value
+            Console.WriteLine("YTD New Customer Sales");
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]", "New Cust count");
+
+            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]/a", "New Customers");
+            await Task.Delay(6000);
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                Console.WriteLine("breadcrumbs clicked");
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='1000']/parent::li");
+                await bp.Wait(4000);
+                //Rows Count
+                await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "New Cust count value");
+
+                //close the screen
+                await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                await Task.Delay(2000);
+            }
+            else
+            {
+                Console.WriteLine("New Customer Field not found");
+            }
+        }
+        public async Task BOT_ExistingCustomers(IPage page)
+        {
+            Console.WriteLine("BOT Existing Customer Sales");
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]", "Bot Existing Cust count");
+
+            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]/a", "BOT Existing Customers");
+            await Task.Delay(6000);
+            if (bp.num > 25)
+            {
+                //For BreadCrumps
+                Console.WriteLine("breadcrumbs clicked");
+                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                await bp.SimpleClick(page, "//span[text() ='1000']/parent::li");
+                await bp.Wait(4000);
+                
+                //Rows Count for Page# 1
+                await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "//button[text()=' 2 ']", "Existing Cust count value");
+
+                //close the screen
+                await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                await Task.Delay(2000);
+            }
+            else
+            {
+                Console.WriteLine("New Customer Field not found");
+            }
         }
     }
 }
