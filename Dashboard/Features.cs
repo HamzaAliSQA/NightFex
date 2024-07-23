@@ -260,8 +260,9 @@ namespace NightFexDemo
             Console.WriteLine($"Number of Days in Current Month: {daysInMonth}");
 
             // Calculate days worked and days left
-            int daysWorked = (currentDate - firstDayOfMonth).Days;
-            int daysLeft = (lastDayOfMonth - currentDate).Days;
+            int daysWorked = (currentDate - firstDayOfMonth).Days ;
+            int daysLeft = (lastDayOfMonth - currentDate).Days ;
+
 
             // Print the results
             Console.WriteLine($"Days Worked This Month: {daysWorked}");
@@ -423,6 +424,15 @@ namespace NightFexDemo
             //close the screen
             await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
         }
+
+        public async Task Agefilter(IPage page)
+        {
+            await bp.ExtractFirstValue(page, "//h3[text() ='CIT: Age Filter (in days)']/parent::div//following-sibling::ul/li[1]/label/span", "Trim value");
+            await bp.Click(page, "//h3[text() ='CIT: Age Filter (in days)']/parent::div//following-sibling::ul/li[1]", "Age filter");
+            await Task.Delay(4000);
+            await bp.ExtractFirstValue(page, "//h4[text() ='Age Filter']/parent::div//parent::div//following-sibling::div//ul//li[1]//following-sibling::span","Matches the value");
+        }
+      
         public async Task MTD_ExistingCustomers(IPage page)
         {
             await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
@@ -449,7 +459,7 @@ namespace NightFexDemo
             //Get the first value
             Console.WriteLine("New Customer Sales");
             await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", "MTD New Cust count");
-
+          
             await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]/a", "MTD New Customers");
             await Task.Delay(4000);
             if (bp.num > 25)
@@ -461,7 +471,7 @@ namespace NightFexDemo
                 await bp.Wait(4000);
                 //Rows Count
                 await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "MTD New Cust count value");
-
+                
                 //close the screen
                 await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
                 await Task.Delay(2000);
@@ -472,6 +482,72 @@ namespace NightFexDemo
             }
         }
 
+
+        public async Task TotalTradeIn(IPage page)
+        {
+            await page.EvaluateAsync(@"window.scrollBy(0, 1000);");
+            await bp.Wait(3000);
+
+            //Total trade
+            Console.WriteLine("'The Total Trade'");
+            await bp.Extraction(page, "//p-radiobutton[@value ='tradeIn']/parent::div/span","The total Trade value");
+            await bp.Wait(3000);
+            await bp.CountValue(page, "//th[text() =' Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "total trade");
+            await bp.Wait(3000);
+
+
+            //Sold
+            Console.WriteLine("\n'The Sold'");
+            await bp.Click(page, "//p-radiobutton[@value ='sold']//div[2]","Sold Radio button");
+            await bp.Wait(5000);
+            await bp.Extraction(page, "//p-radiobutton[@value ='sold']/parent::div/span", "The total Sold value");
+            await bp.Wait(5000);
+            await bp.CountValue(page, "//th[text() =' Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "total Sold");
+            await bp.Wait(5000);
+
+            //Funded
+            Console.WriteLine("\n'The Funded'");
+            await bp.Click(page, "//p-radiobutton[@value ='funded']//div[2]", "Funded Radio button");
+            await bp.Wait(3000);
+            await bp.Extraction(page, "//p-radiobutton[@value ='funded']/parent::div/span", "The total funded value");
+            await bp.Wait(3000);
+            await bp.CountValue(page, "//th[text() =' Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "total Sold");
+            await bp.Wait(3000);
+
+            //Not Funded
+            Console.WriteLine("\n'The Not Funded'");
+            await bp.Click(page, "//p-radiobutton[@value ='notfunded']//div[2]", "notfunded Radio button");
+            await bp.Wait(3000);
+            await bp.Extraction(page, "//p-radiobutton[@value ='notfunded']/parent::div/span", "The total Not funded value");
+            await bp.Wait(5000);
+            await bp.CountValue(page, "//th[text() =' Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "total Sold");
+            await bp.Wait(5000);
+
+            //WholeSale
+            Console.WriteLine("\n'The Whole Sale Value'");
+            await bp.Extraction(page, "//span[text() =' Wholesale ']/parent::div/span[2]", "The total Whole Sale");
+            await bp.Wait(3000);
+            await bp.CountValue(page, "//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "Whole Sale");
+            await bp.Wait(3000);
+
+            //DEALER TRADE
+            Console.WriteLine("\n'The Dealer trade'");
+            await bp.Extraction(page, "//span[text() =' Dealer Trade ']/parent::div/span[2]", "The total Whole Sale");
+            await bp.Wait(3000);
+            await bp.CountValue(page, "//th[text() ='Deal Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "Whole Sale");
+            await bp.Wait(3000);
+
+            //Lease Return
+            Console.WriteLine("\n'The Dealer trade'");
+            await bp.Extraction(page, "//span[text() =' Lease Return ']/parent::div/span[2]", "The total Whole Sale");
+            await bp.Wait(3000);
+            await bp.CountValue(page, "//th[text() ='Lender ']/parent::tr/parent::thead//following-sibling::tbody//tr", "Whole Sale");
+            await bp.Wait(3000);
+
+            Console.WriteLine("\nTOP SALES MANAGER");
+            await bp.CountValue(page, "//th[text() ='User Name ']/parent::tr/parent::thead//following-sibling::tbody//tr/td[text() ='1']", "Top sales Manager");
+        }
+                
 
         //>>>>>>>>>>XXXXXXXXX<<<<<<<<<<<<<<<<<
         public async Task YTD_ExistingCustomers(IPage page)

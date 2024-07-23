@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NightFexDemo
 {
@@ -135,6 +136,7 @@ namespace NightFexDemo
                 {
                     totalRows = 0;
                 }
+
                 else if (num > 0 && num < 1000)
                 {
                     await TextAssertion(page,num,totalRows);
@@ -211,7 +213,7 @@ namespace NightFexDemo
                     string trimmedValue = match.Success ? match.Groups[1].Value : string.Empty;
                     int Value = int.Parse(trimmedValue);
                     Console.WriteLine("Trimmed Value: " + Value);
-                   
+
                     await Assertion(page, radiobtnLoc, Value, assert1Des);
                     await Assertion(page, grandTtloc, Value, assert2Des);
                 }
@@ -269,16 +271,64 @@ namespace NightFexDemo
             {
                 Console.WriteLine("not found");
             }
+            var trimmedText = actualText.Split('/')[0].Trim();
+            if (int.TryParse(trimmedText, out int num2))
+            {
+                Console.WriteLine(trimmedText);
+            }
             else
             {
-                var trimmedText = actualText.Split('/')[0].Trim();
-                var cleanedText = trimmedText.Replace(",", "");
-                if (int.TryParse(cleanedText, out num))
+                var trimmedText2 = actualText.Split('=')[1].Trim();
+                if (int.TryParse(trimmedText2, out int num3))
                 {
-                    Console.WriteLine($"Trimmed Value: {num}");
+                    Console.WriteLine(trimmedText2);
+                }
+                else
+                {
+                    // Handle cases where '=' is not present but we need to extract a number
+                    var match = Regex.Match(actualText, @"(\d+)");
+                    if (match.Success)
+                    {
+                        var number = match.Value;
+                        Console.WriteLine(number);
+                    }
+                }
+
+
+            }
+        }
+
+       public async Task Extraction(IPage page, string selector, string stepdetail = "")
+        {
+            var element = await page.WaitForSelectorAsync(selector);
+            if (element == null)
+            {
+                Console.WriteLine("Element not found");
+                return;
+            }
+            var actualText = await element.InnerTextAsync();
+            if (actualText == null)
+            {
+                Console.WriteLine("not found");
+            }
+
+            var trimmedText = actualText.Split('(', ')')[1].Trim();
+            if (int.TryParse(trimmedText, out int num2))
+            {
+                Console.WriteLine($"Total Value is: { trimmedText}");
+            }
+            else
+            {
+
+                // Handle cases where '=' is not present but we need to extract a number
+                var match = Regex.Match(actualText, @"(\d+)");
+                if (match.Success)
+                {
+                    var number = match.Value;
+                    Console.WriteLine(number);
+
                 }
             }
         }
     }
 }
-
