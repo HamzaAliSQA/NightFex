@@ -137,9 +137,9 @@ namespace NightFexDemo
                     totalRows = 0;
                 }
 
-                else if (num > 0 && num < 1000)
+                else if (num > 0 && num <= 1000)
                 {
-                    await TextAssertion(page,num,totalRows);
+                    await NumberAssertion(page,num,totalRows,stepdetails);
                     //Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
                 }
                 else if (num >= 1001 && num <= 20000)
@@ -150,7 +150,7 @@ namespace NightFexDemo
                     var nextPageRows = await page.QuerySelectorAllAsync(tableRowSelector);
                     int nextpagecount = nextPageRows.Count;
                     totalRows += nextpagecount;
-                    await TextAssertion(page, num, totalRows);
+                    await NumberAssertion(page, num, totalRows,stepdetails);
                     //Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
                 }
                 else
@@ -175,27 +175,29 @@ namespace NightFexDemo
             if (actualText == expText)
             {
                 Assert.That(actualText, Is.EqualTo(expText));
-                Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText}");
+                Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText},  {stepdetail}");
                 //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
             }
             else
             {
                 Assert.That(actualText, Is.Not.EqualTo(expText));
-                Console.WriteLine($"Expected text: {expText} does not match the actual text: {actualText}.");
+                Console.WriteLine($"Expected text: {expText} does not match the actual text: {actualText},  {stepdetail}.");
             }
         }
-        public async Task TextAssertion(IPage page, int actualText, int expText, string stepdetail = "")
+        public async Task NumberAssertion(IPage page, int actualText, int expText, string stepdetail = "")
         {
             if (actualText == expText)
             {
                 Assert.That(actualText, Is.EqualTo(expText));
-                Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText}");
+                //Console.WriteLine($"Expected text: {expText} matches the actual text: {actualText},  {stepdetail}");
+
+                Console.WriteLine($"{stepdetail} Number: {actualText} is equal to total number of rows: {expText}");
                 //await extent.TakeScreenshot(page, Status.Pass, stepdetail);
             }
             else
             {
                 Assert.That(actualText, Is.Not.EqualTo(expText));
-                Console.WriteLine($"Expected text: {expText} does not match the actual text: {actualText}.");
+                Console.WriteLine($"Expected text: {expText} does not match the actual text: {actualText},  {stepdetail}.");
             }
         }
 
@@ -272,30 +274,12 @@ namespace NightFexDemo
                 Console.WriteLine("not found");
             }
             var trimmedText = actualText.Split('/')[0].Trim();
-            if (int.TryParse(trimmedText, out int num2))
+            var cleanedText = trimmedText.Replace(",", "");
+            if (int.TryParse(cleanedText, out num))
             {
-                Console.WriteLine(trimmedText);
+                Console.WriteLine($"{stepdetail} Number: {num}");
             }
-            else
-            {
-                var trimmedText2 = actualText.Split('=')[1].Trim();
-                if (int.TryParse(trimmedText2, out int num3))
-                {
-                    Console.WriteLine(trimmedText2);
-                }
-                else
-                {
-                    // Handle cases where '=' is not present but we need to extract a number
-                    var match = Regex.Match(actualText, @"(\d+)");
-                    if (match.Success)
-                    {
-                        var number = match.Value;
-                        Console.WriteLine(number);
-                    }
-                }
-
-
-            }
+            
         }
 
        public async Task Extraction(IPage page, string selector, string stepdetail = "")

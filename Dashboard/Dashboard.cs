@@ -16,11 +16,11 @@ namespace NightFexDemo
         public async Task dashboard(IPage page)
         {
             await features.Days(page);
-            await features.MTD_ExistingCustomers(page);
-            //await features.BOT_ExistingCustomers(page);
-            //await features.YTD_NewCustomers(page);
+            //await features.MTD_ExistingCustomers(page);
             //await features.MTD_NewCustomers(page);
             //await features.YTD_ExistingCustomers(page);
+            //await features.YTD_NewCustomers(page);
+            await features.BOT_ExistingCustomers(page);
             //await features.TabNumbersAssertion(page);
             //await features.SalesDelivered(page);
             //await features.NotDelivered(page);
@@ -31,8 +31,7 @@ namespace NightFexDemo
             //await features.NotFunded(page);
             ////await header.Headers(page);
             ////await features.New_UnitValue(page);
-            //await features.Agefilter(page);
-            await features.TotalTradeIn(page);
+            //await features.TotalTradeIn(page);
         }
     }
 }
