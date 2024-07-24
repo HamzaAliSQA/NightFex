@@ -425,13 +425,7 @@ namespace NightFexDemo
             await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
         }
 
-        public async Task Agefilter(IPage page)
-        {
-            await bp.ExtractFirstValue(page, "//h3[text() ='CIT: Age Filter (in days)']/parent::div//following-sibling::ul/li[1]/label/span", "Trim value");
-            await bp.Click(page, "//h3[text() ='CIT: Age Filter (in days)']/parent::div//following-sibling::ul/li[1]", "Age filter");
-            await Task.Delay(4000);
-            await bp.ExtractFirstValue(page, "//h4[text() ='Age Filter']/parent::div//parent::div//following-sibling::div//ul//li[1]//following-sibling::span","Matches the value");
-        }
+        
       
         public async Task MTD_ExistingCustomers(IPage page)
         {
@@ -448,7 +442,7 @@ namespace NightFexDemo
             await bp.Wait(4000);
           
             //Rows Count
-            await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "MTD count value");
+            await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "MTD count");
 
             //close the screen
             await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
@@ -483,6 +477,132 @@ namespace NightFexDemo
         }
 
 
+        
+                
+
+        //>>>>>>>>>>XXXXXXXXX<<<<<<<<<<<<<<<<<
+        public async Task YTD_ExistingCustomers(IPage page)
+        {
+            //await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
+
+            //give xpath of desired radio button for assertion of sales
+            //await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/input");
+            //await bp.Wait(4000);
+            //Get the first value
+            Console.WriteLine("YTD Existing Customer Sales");
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", "YTD Existing Cust count");
+            try
+            {
+                await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]/a", "YTD New Customers");
+                await Task.Delay(4000);
+                if (bp.num > 25)
+                {
+                    //For BreadCrumps
+                    Console.WriteLine("breadcrumbs clicked");
+                    await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                    await bp.SimpleClick(page, "//span[text() ='500']/parent::li");
+                    await bp.Wait(4000);
+                    //Rows Count
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "", "YTD New Cust count value");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+                else
+                {
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "", "YTD New Cust count value");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"YTD Existing Customer error: {ex}");
+            }
+        }
+        public async Task YTD_NewCustomers(IPage page)
+        {
+            
+            //Get the first value
+            Console.WriteLine("YTD New Customer Sales");
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]", "New Cust count");
+
+            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]/a", "New Customers");
+            await Task.Delay(6000);
+            try
+            {
+                if (bp.num > 25)
+                {
+                    //For BreadCrumps
+                    Console.WriteLine("breadcrumbs clicked");
+                    await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                    await bp.SimpleClick(page, "//span[text() ='1000']/parent::li");
+                    await bp.Wait(4000);
+                    //Rows Count
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "", "New Cust count value");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+                else
+                {
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "", "New Cust count value");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"YTD New Customer error: {ex}");
+            }
+            
+        }
+        public async Task BOT_ExistingCustomers(IPage page)
+        {
+            Console.WriteLine("BOT Existing Customer Sales");
+            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]", "Bot Existing Cust count");
+
+            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]/a", "BOT Existing Customers");
+            await Task.Delay(6000);
+            try
+            {
+                if (bp.num > 25)
+                {
+                    //For BreadCrumps
+                    Console.WriteLine("breadcrumbs clicked");
+                    await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                    await bp.SimpleClick(page, "//span[text() ='1000']/parent::li");
+                    await bp.Wait(4000);
+
+                    //Rows Count for Page# 1
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "//button[text()=' 2 ']", "Existing Cust count value");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+                else
+                {
+                    //Rows Count for Page# 1
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "//button[text()=' 2 ']", "Existing Cust count value");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"BOT Existing Customer: {ex}");
+            }
+           
+        }
         public async Task TotalTradeIn(IPage page)
         {
             await page.EvaluateAsync(@"window.scrollBy(0, 1000);");
@@ -490,7 +610,7 @@ namespace NightFexDemo
 
             //Total trade
             Console.WriteLine("'The Total Trade'");
-            await bp.Extraction(page, "//p-radiobutton[@value ='tradeIn']/parent::div/span","The total Trade value");
+            await bp.Extraction(page, "//p-radiobutton[@value ='tradeIn']/parent::div/span", "The total Trade value");
             await bp.Wait(3000);
             await bp.CountValue(page, "//th[text() =' Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "total trade");
             await bp.Wait(3000);
@@ -498,7 +618,7 @@ namespace NightFexDemo
 
             //Sold
             Console.WriteLine("\n'The Sold'");
-            await bp.Click(page, "//p-radiobutton[@value ='sold']//div[2]","Sold Radio button");
+            await bp.Click(page, "//p-radiobutton[@value ='sold']//div[2]", "Sold Radio button");
             await bp.Wait(5000);
             await bp.Extraction(page, "//p-radiobutton[@value ='sold']/parent::div/span", "The total Sold value");
             await bp.Wait(5000);
@@ -546,96 +666,6 @@ namespace NightFexDemo
 
             Console.WriteLine("\nTOP SALES MANAGER");
             await bp.CountValue(page, "//th[text() ='User Name ']/parent::tr/parent::thead//following-sibling::tbody//tr/td[text() ='1']", "Top sales Manager");
-        }
-                
-
-        //>>>>>>>>>>XXXXXXXXX<<<<<<<<<<<<<<<<<
-        public async Task YTD_ExistingCustomers(IPage page)
-        {
-            //await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
-
-            //give xpath of desired radio button for assertion of sales
-            //await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/input");
-            //await bp.Wait(4000);
-            //Get the first value
-            Console.WriteLine("YTD Existing Customer Sales");
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", "YTD Existing Cust count");
-
-            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]/a", "YTD New Customers");
-            await Task.Delay(4000);
-            if (bp.num > 25)
-            {
-                //For BreadCrumps
-                Console.WriteLine("breadcrumbs clicked");
-                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
-                await bp.SimpleClick(page, "//span[text() ='500']/parent::li");
-                await bp.Wait(4000);
-                //Rows Count
-                await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "YTD New Cust count value");
-
-                //close the screen
-                await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
-                await Task.Delay(2000);
-            }
-            else
-            {
-                Console.WriteLine("New Customer Field not found");
-            }
-        }
-        public async Task YTD_NewCustomers(IPage page)
-        {
-            
-            //Get the first value
-            Console.WriteLine("YTD New Customer Sales");
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]", "New Cust count");
-
-            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]/a", "New Customers");
-            await Task.Delay(6000);
-            if (bp.num > 25)
-            {
-                //For BreadCrumps
-                Console.WriteLine("breadcrumbs clicked");
-                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
-                await bp.SimpleClick(page, "//span[text() ='1000']/parent::li");
-                await bp.Wait(4000);
-                //Rows Count
-                await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "New Cust count value");
-
-                //close the screen
-                await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
-                await Task.Delay(2000);
-            }
-            else
-            {
-                Console.WriteLine("New Customer Field not found");
-            }
-        }
-        public async Task BOT_ExistingCustomers(IPage page)
-        {
-            Console.WriteLine("BOT Existing Customer Sales");
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]", "Bot Existing Cust count");
-
-            await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]/a", "BOT Existing Customers");
-            await Task.Delay(6000);
-            if (bp.num > 25)
-            {
-                //For BreadCrumps
-                Console.WriteLine("breadcrumbs clicked");
-                await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
-                await bp.SimpleClick(page, "//span[text() ='1000']/parent::li");
-                await bp.Wait(4000);
-                
-                //Rows Count for Page# 1
-                await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "//button[text()=' 2 ']", "Existing Cust count value");
-
-                //close the screen
-                await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
-                await Task.Delay(2000);
-            }
-            else
-            {
-                Console.WriteLine("New Customer Field not found");
-            }
         }
     }
 }
