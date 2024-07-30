@@ -13,7 +13,7 @@ namespace NightFexDemo
     public class Basepage
     {
         public int num;
-
+        Features features = new Features();
         public async Task Goto(IPage page, string url)
         {
             await page.GotoAsync(url);
@@ -99,7 +99,7 @@ namespace NightFexDemo
             {
                 var actualText = await element.InnerTextAsync();
                 num = int.Parse(actualText);
-                //Console.WriteLine($"number: {num}");
+             
             }
 
         }
@@ -129,6 +129,7 @@ namespace NightFexDemo
                     if (textContent != null && textContent.Contains("No records found"))
                     {
                         noRecordsFound = true;
+                        Console.WriteLine("No Records Found");
                         break;
                     }
                 }
@@ -139,7 +140,7 @@ namespace NightFexDemo
 
                 else if (num > 0 && num <= 1000)
                 {
-                    await NumberAssertion(page,num,totalRows,stepdetails);
+                    await NumberAssertion(page, num, totalRows, stepdetails);
                     //Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
                 }
                 else if (num >= 1001 && num <= 20000)
@@ -150,7 +151,7 @@ namespace NightFexDemo
                     var nextPageRows = await page.QuerySelectorAllAsync(tableRowSelector);
                     int nextpagecount = nextPageRows.Count;
                     totalRows += nextpagecount;
-                    await NumberAssertion(page, num, totalRows,stepdetails);
+                    await NumberAssertion(page, num, totalRows, stepdetails);
                     //Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
                 }
                 else
@@ -279,10 +280,10 @@ namespace NightFexDemo
             {
                 Console.WriteLine($"{stepdetail} Number: {num}");
             }
-            
+
         }
 
-       public async Task Extraction(IPage page, string selector, string stepdetail = "")
+        public async Task Extraction(IPage page, string selector, string stepdetail = "")
         {
             var element = await page.WaitForSelectorAsync(selector);
             if (element == null)
@@ -299,7 +300,8 @@ namespace NightFexDemo
             var trimmedText = actualText.Split('(', ')')[1].Trim();
             if (int.TryParse(trimmedText, out int num2))
             {
-                Console.WriteLine($"Total Value is: { trimmedText}");
+
+                Console.WriteLine($"Total Value is: {trimmedText}");
             }
             else
             {
@@ -314,5 +316,7 @@ namespace NightFexDemo
                 }
             }
         }
+       
     }
+    
 }

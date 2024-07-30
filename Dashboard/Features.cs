@@ -259,27 +259,63 @@ namespace NightFexDemo
             int daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
             Console.WriteLine($"Number of Days in Current Month: {daysInMonth}");
 
-            // Calculate days worked and days left
-            int daysWorked = (currentDate - firstDayOfMonth).Days ;
-            int daysLeft = (lastDayOfMonth - currentDate).Days ;
+            
+            await bp.htmlExtractor(page, "//th[contains(text(),'Todays Sales ')]/ancestor::table//tbody[1]//td[1]");
+            await bp.Wait(5000);
+
+            if (bp.num > 0)
+            {
+                int daysWorked = (currentDate - firstDayOfMonth).Days + 1;
+
+                Console.WriteLine($"Days Worked This Month: {daysWorked}");
+
+                await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", daysWorked, "Days of Worked");
+
+            }
+            else
+            {
+                int daysWorked = (currentDate - firstDayOfMonth).Days;
+                int daysLeft = (lastDayOfMonth - currentDate).Days;
 
 
-            // Print the results
-            Console.WriteLine($"Days Worked This Month: {daysWorked}");
-            Console.WriteLine($"Days Left This Month: {daysLeft}");
+                // Print the results
+                Console.WriteLine($"Days Worked This Month: {daysWorked}");
+                Console.WriteLine($"Days Left This Month: {daysLeft}");
 
-            //Days Month
-            await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]", daysInMonth, "Current Month of Days");
+                //Days Month
+                await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]", daysInMonth, "Current Month of Days");
 
-            //Days Worked
-            await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", daysWorked, "Days of Worked");
+                //Days Worked
+                await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", daysWorked, "Days of Worked");
 
-            //Days Left
-            await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", daysLeft, "Days Left");
+                //Days Left
+                await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", daysLeft, "Days Left");
 
+            }
 
         }
+        //public async Task CalculateValue(IPage page)
+        //{
+        //    await bp.htmlExtractor(page, "//th[contains(text(),'Todays Sales ')]/ancestor::table//tbody[1]//td[1]");
+        //    await bp.Wait(5000);
 
+        //    if(bp.num> 0)
+        //    {
+        //        DateTime currentDate = DateTime.Now;
+        //        DateTime firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+
+        //        int daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+        //        Console.WriteLine($"Number of Days in Current Month: {daysInMonth}");
+
+        //        int daysWorked = (currentDate - firstDayOfMonth).Days +1;
+
+        //        Console.WriteLine($"Days Worked This Month: {daysWorked}");
+               
+        //        await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", daysWorked, "Days of Worked");
+
+        //    }
+
+        //}
         public async Task SalesDelivered(IPage page)
         {
            
@@ -484,7 +520,7 @@ namespace NightFexDemo
         public async Task YTD_ExistingCustomers(IPage page)
         {
             //await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
-
+                       
             //give xpath of desired radio button for assertion of sales
             //await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/input");
             //await bp.Wait(4000);
@@ -667,6 +703,193 @@ namespace NightFexDemo
             Console.WriteLine("\nTOP SALES MANAGER");
             await bp.CountValue(page, "//th[text() ='User Name ']/parent::tr/parent::thead//following-sibling::tbody//tr/td[text() ='1']", "Top sales Manager");
         }
+
+        public async Task Sales(IPage page)
+        {
+            DateTime currentDate = DateTime.Now;
+
+            DateTime dayBeforeYesterday = currentDate.AddDays(-2);
+            DateTime yesterday = currentDate.AddDays(-1);
+            DateTime today = currentDate;
+
+            /*--------------Before Yesterday--------------*/
+            Console.WriteLine($"\nDay Before Yesterday's Date: {dayBeforeYesterday.ToShortDateString()} ({dayBeforeYesterday.DayOfWeek})");
+
+            //New
+            await bp.htmlExtractor(page, "//th[text() = 'Day Before Yesterdays Sales ( Mon, Jul 22, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[1]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("1:The New sales Record:");
+            await bp.Click(page, "//th[text() = 'Day Before Yesterdays Sales ( Mon, Jul 22, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[1]", "New value");
+            await bp.Wait(3000);
+
+            await bp.CountValue(page, "//strong[text() =' New ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "New Rows Count");
+            await bp.Wait(3000);
+
+            await bp.SimpleClick(page, "//strong[text() =' New ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+
+            //certified
+            await bp.htmlExtractor(page, "//th[text() = 'Day Before Yesterdays Sales ( Mon, Jul 22, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[2]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("2:The Certified sales Record:");
+            await bp.Click(page, "//th[text() = 'Day Before Yesterdays Sales ( Mon, Jul 22, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[2]", "Certified Value");
+            await bp.Wait(3000);
+
+
+            await bp.CountValue(page, "//strong[text() =' Certified ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Certified Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Certified ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+            //Not certified
+            await bp.htmlExtractor(page, "//th[text() = 'Day Before Yesterdays Sales ( Mon, Jul 22, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[3]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("3:The Not Certified sales Record:");
+            await bp.Click(page, "//th[text() = 'Day Before Yesterdays Sales ( Mon, Jul 22, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[3]", "Certified Value");
+            await bp.Wait(3000);
+
+
+            await bp.CountValue(page, "//strong[text() =' Non-Certified ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Not Certified Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Non-Certified ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+            //Other Makes
+            await bp.htmlExtractor(page, "//th[text() = 'Day Before Yesterdays Sales ( Mon, Jul 22, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[4]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("4:The Other Makes sales Record:");
+            await bp.Click(page, "//th[text() = 'Day Before Yesterdays Sales ( Mon, Jul 22, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[4]", "Other Makes Value");
+            await bp.Wait(3000);
+
+
+            await bp.CountValue(page, "//strong[text() =' Other-Makes ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Other Makes Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Other-Makes ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+         
+            /*-------------Yesterday Date--------------*/
+            Console.WriteLine($"\nYesterday's Date: {yesterday.ToShortDateString()} ({yesterday.DayOfWeek})");
+
+            //New
+            await bp.htmlExtractor(page, "//th[text() = 'Yesterdays Sales ( Tue, Jul 23, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[1]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("1:The New sales Record:");
+            await bp.Click(page, "//th[text() = 'Yesterdays Sales ( Tue, Jul 23, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[1]", "New value");
+            await bp.Wait(3000);
+
+
+            await bp.CountValue(page, "//strong[text() =' New ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Rows Count");
+            await bp.Wait(3000);
+
+            await bp.SimpleClick(page, "//strong[text() =' New ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+            //certified
+            await bp.htmlExtractor(page, "//th[text() = 'Yesterdays Sales ( Tue, Jul 23, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[2]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("2:The Certified sales Record:");
+            await bp.Click(page, "//th[text() = 'Yesterdays Sales ( Tue, Jul 23, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[2]", "Certified Value");
+            await bp.Wait(3000);
+
+
+            await bp.CountValue(page, "//strong[text() =' Certified ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Certified Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Certified ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+            //Not certified
+            await bp.htmlExtractor(page, "//th[text() = 'Yesterdays Sales ( Tue, Jul 23, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[3]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("3:The Not Certified Sales Record:");
+            await bp.Click(page, "//th[text() = 'Yesterdays Sales ( Tue, Jul 23, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[3]", "Not Certified Value");
+            await bp.Wait(3000);
+
+
+            await bp.CountValue(page, "//strong[text() =' Non-Certified ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Certified Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Non-Certified ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+            //other makes
+            await bp.htmlExtractor(page, "//th[text() = 'Yesterdays Sales ( Tue, Jul 23, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[4]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("4:The Other Makes Sales Record:");
+            await bp.Click(page, "//th[text() = 'Yesterdays Sales ( Tue, Jul 23, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[4]", "Other Makes Value");
+            await bp.Wait(3000);
+
+
+            await bp.CountValue(page, "//strong[text() =' Other-Makes ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Other Makes Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Other-Makes ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+
+            /*-------------Todays Date----------*/
+            Console.WriteLine($"\nToday's Date: {today.ToShortDateString()} ({today.DayOfWeek})");
+
+            //New
+            await bp.htmlExtractor(page, "//th[text() = 'Todays Sales ( Wed, Jul 24, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[1]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("1:The New sales Record:");
+            await bp.Click(page, "//th[text() = 'Todays Sales ( Wed, Jul 24, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[1]", "New value");
+            await bp.Wait(3000);
+
+            await bp.CountValue(page, "//strong[text() =' New ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Rows Count");
+            await bp.Wait(3000);
+
+            await bp.SimpleClick(page, "//strong[text() =' New ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+            //certified
+            await bp.htmlExtractor(page, "//th[text() = 'Todays Sales ( Wed, Jul 24, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[2]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("2:The Certified sales Record:");
+            await bp.Click(page, "//th[text() = 'Todays Sales ( Wed, Jul 24, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[2]", "Certified Value");
+            await bp.Wait(3000);
+
+            await bp.CountValue(page, "//strong[text() =' Certified ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Certified Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Certified ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+
+            //Not certified
+            await bp.htmlExtractor(page, "//th[text() = 'Todays Sales ( Wed, Jul 24, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[3]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("3:The Not Certified sales Record:");
+            await bp.Click(page, "//th[text() = 'Todays Sales ( Wed, Jul 24, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[3]", "Certified Value");
+            await bp.Wait(3000);
+
+            await bp.CountValue(page, "//strong[text() =' Non-Certified ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Certified Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Non-Certified ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+
+            //Other makes
+            await bp.htmlExtractor(page, "//th[text() = 'Todays Sales ( Wed, Jul 24, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[4]");
+            await bp.Wait(3000);
+
+            Console.WriteLine("4:The Other Makes sales Record:");
+            await bp.Click(page, "//th[text() = 'Todays Sales ( Wed, Jul 24, 2024 ) ']/parent::tr/parent::thead/parent::table//tbody[1]//td[4]", "Other Makes Value");
+            await bp.Wait(3000);
+
+            await bp.CountValue(page, "//strong[text() =' Other-Makes ']/parent::div/parent::p-header/parent::span/parent::div/following-sibling::div/div[4]//th[text() ='Date ']/parent::tr/parent::thead//following-sibling::tbody//tr", "", "Other Makes Rows Count");
+
+            await bp.SimpleClick(page, "//strong[text() =' Other-Makes ']/parent::div/parent::p-header/parent::span/following-sibling::div//button");
+            await bp.Wait(3000);
+        }
+
     }
 }
- 
