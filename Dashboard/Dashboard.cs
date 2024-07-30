@@ -15,13 +15,23 @@ namespace NightFexDemo
         Header header = new Header();
         public async Task dashboard(IPage page)
         {
+
            
-            await features.Days(page);
-            //await features.MTD_ExistingCustomers(page);
+         
+           // await features.Days(page);
+            await features.MTD_ExistingCustomers(page);
+            await features.NewCard(page);
+            await features.CertifiedCard(page);
+            await features.Non_CertifiedCard(page);
+            await features.OtherMakes(page);
+            await features.TotalPreOwnedCard(page);
+            await features.GrandTotalCard(page);
+
             //await features.MTD_NewCustomers(page);
+            //await features.BOT_ExistingCustomers(page);
             //await features.YTD_ExistingCustomers(page);
             //await features.YTD_NewCustomers(page);
-            //await features.BOT_ExistingCustomers(page);
+
             //await features.TabNumbersAssertion(page);
             //await features.SalesDelivered(page);
             //await features.NotDelivered(page);
@@ -30,9 +40,12 @@ namespace NightFexDemo
             //await features.Finalized(page);
             //await features.Funded(page);
             //await features.NotFunded(page);
+
             ////await header.Headers(page);
             ////await features.New_UnitValue(page);
             //await features.Agefilter(page);
+
+
             //await features.TotalTradeIn(page);
             //await features.Sales(page);
         }

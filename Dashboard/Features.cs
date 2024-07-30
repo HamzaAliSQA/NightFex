@@ -291,7 +291,6 @@ namespace NightFexDemo
                 //Days Left
                 await bp.Assertion(page, "//th[text() ='Days in a month']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", daysLeft, "Days Left");
 
-            }
 
         }
         //public async Task CalculateValue(IPage page)
@@ -471,62 +470,101 @@ namespace NightFexDemo
             await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/input");
             await bp.Wait(4000);
             Console.WriteLine("MTD Existing Customer Sales");
-            //Get the first value
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]", "MTD Existing Cust count");
+
+            //for calculating and assertion the percentage
+            await bp.SalesPercentage(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]","MTD Exist Percentage");
 
             await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[1]/a", "MTD Existing Customers");
             await bp.Wait(4000);
-          
-            //Rows Count
-            await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "MTD count");
+            try
+            {
+                if (bp.num > 25)
+                {
+                    //For BreadCrumps
+                    Console.WriteLine("breadcrumbs clicked");
+                    await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                    await bp.Wait(2000);
+                    await bp.SimpleClick(page, "//span[text() ='500']/parent::li");
+                    await bp.Wait(4000);
 
-            //close the screen
-            await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
-            
+                    //Rows Count
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "", "MTD count");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+                else
+                {
+                    //Rows Count
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "", "MTD count");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"MTD Existing Customer error: {ex}");
+            }
         }
+
+
         public async Task MTD_NewCustomers(IPage page)
         {
             //Get the first value
             Console.WriteLine("New Customer Sales");
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", "MTD New Cust count");
-          
+
+            //for calculating and assertion the percentage
+            await bp.SalesPercentage(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]", "MTD New Cust Percentage");
+
             await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[2]/a", "MTD New Customers");
-            await Task.Delay(4000);
-            if (bp.num > 25)
+            await bp.Wait(4000);
+            try
             {
-                //For BreadCrumps
-                Console.WriteLine("breadcrumbs clicked");
-                await bp.SimpleClick(page,"//span[text()='25']/parent::div//following-sibling::div/span");
-                await bp.SimpleClick(page, "//span[text() ='500']/parent::li");
-                await bp.Wait(4000);
-                //Rows Count
-                await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr","", "MTD New Cust count value");
-                
-                //close the screen
-                await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
-                await Task.Delay(2000);
+                if (bp.num > 25)
+                {
+                    //For BreadCrumps
+                    Console.WriteLine("breadcrumbs clicked");
+                    await bp.SimpleClick(page, "//div[@aria-label='dropdown trigger']/parent::div//following-sibling::div/span");
+                    await bp.SimpleClick(page, "//span[text() ='500']/parent::li");
+                    await bp.Wait(4000);
+                    //Rows Count
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "", "MTD New Cust count value");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
+                else
+                {
+                    //Rows Count
+                    await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "", "MTD New Cust count value");
+
+                    //close the screen
+                    await bp.SimpleClick(page, "//button[contains(@class,'p-dialog-header-close')]");
+                    await Task.Delay(2000);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                Console.WriteLine("New Customer Field not found");
+                Console.WriteLine($"MTD New Customer error: {ex}");
             }
+            
         }
 
-
-        
-                
 
         //>>>>>>>>>>XXXXXXXXX<<<<<<<<<<<<<<<<<
         public async Task YTD_ExistingCustomers(IPage page)
         {
-            //await bp.Click(page, "//button[text()='Show Sources']", "Showsources button");
-                       
-            //give xpath of desired radio button for assertion of sales
-            //await bp.SimpleClick(page, "//th[text() ='New / Used']/parent::tr/parent::thead/parent::table//following-sibling::tbody//following-sibling::tr/td[3]/div/input");
-            //await bp.Wait(4000);
-            //Get the first value
+
             Console.WriteLine("YTD Existing Customer Sales");
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", "YTD Existing Cust count");
+
+            //for calculating and assertion the percentage
+            await bp.SalesPercentage(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]", "YTD Exist Cust Percentage");
+
+
             try
             {
                 await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[3]/a", "YTD New Customers");
@@ -535,7 +573,7 @@ namespace NightFexDemo
                 {
                     //For BreadCrumps
                     Console.WriteLine("breadcrumbs clicked");
-                    await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                    await bp.SimpleClick(page, "//div[@aria-label='dropdown trigger']/parent::div//following-sibling::div/span");
                     await bp.SimpleClick(page, "//span[text() ='500']/parent::li");
                     await bp.Wait(4000);
                     //Rows Count
@@ -564,7 +602,10 @@ namespace NightFexDemo
             
             //Get the first value
             Console.WriteLine("YTD New Customer Sales");
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]", "New Cust count");
+
+            //for calculating and assertion the percentage
+            await bp.SalesPercentage(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]", "YTD New Cust Percentage");
+
 
             await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[4]/a", "New Customers");
             await Task.Delay(6000);
@@ -574,7 +615,7 @@ namespace NightFexDemo
                 {
                     //For BreadCrumps
                     Console.WriteLine("breadcrumbs clicked");
-                    await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                    await bp.SimpleClick(page, "//div[@aria-label='dropdown trigger']/parent::div//following-sibling::div/span");
                     await bp.SimpleClick(page, "//span[text() ='1000']/parent::li");
                     await bp.Wait(4000);
                     //Rows Count
@@ -602,7 +643,9 @@ namespace NightFexDemo
         public async Task BOT_ExistingCustomers(IPage page)
         {
             Console.WriteLine("BOT Existing Customer Sales");
-            await bp.ExtractFirstValue(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]", "Bot Existing Cust count");
+
+            //for calculating and assertion the percentage
+            await bp.SalesPercentage(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]", "BOT Exist Cust Percentage");
 
             await bp.Click(page, "//th[text() ='Existing Customers (Sales Count)']/parent::tr/parent::thead/parent::table//following-sibling::tbody//td[5]/a", "BOT Existing Customers");
             await Task.Delay(6000);
@@ -612,9 +655,9 @@ namespace NightFexDemo
                 {
                     //For BreadCrumps
                     Console.WriteLine("breadcrumbs clicked");
-                    await bp.SimpleClick(page, "//span[text()='25']/parent::div//following-sibling::div/span");
+                    await bp.SimpleClick(page, "//div[@aria-label='dropdown trigger']/parent::div//following-sibling::div/span");
                     await bp.SimpleClick(page, "//span[text() ='1000']/parent::li");
-                    await bp.Wait(4000);
+                    await bp.Wait(3000);
 
                     //Rows Count for Page# 1
                     await bp.CountValue(page, "//th[text() ='Customer# ']/following-sibling::th[text()='Customer Name ']/parent::tr/parent::thead/following-sibling::tbody//tr", "//button[text()=' 2 ']", "Existing Cust count value");
@@ -639,6 +682,62 @@ namespace NightFexDemo
             }
            
         }
+       
+        public async Task NewCard(IPage page)
+        {
+            Console.WriteLine("New Card");
+            await bp.CardsNumberCal(page, "//div[@class='saleStatSec']/div[2]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='row headTableHolder']//div[1]//td[2]", "//div[@class='row headTableHolder']//div[1]//td[1]", "//div[@class='saleStatSec']/div[2]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[2]//tbody[1]/tr[2]/td[2]");
+        }
+
+        public async Task CertifiedCard(IPage page)
+        {
+            Console.WriteLine("Certified Card");
+            await bp.CardsNumberCal(page, "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='row headTableHolder']//div[1]//td[2]", "//div[@class='row headTableHolder']//div[1]//td[1]", "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[2]");
+        }
+        public async Task Non_CertifiedCard(IPage page)
+        {
+            Console.WriteLine("Non Certified Card");
+            await bp.CardsNumberCal(page, "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='row headTableHolder']//div[1]//td[2]", "//div[@class='row headTableHolder']//div[1]//td[1]", "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[2]");
+        }
+        public async Task OtherMakes(IPage page)
+        {
+            Console.WriteLine("Other Makes Card");
+            await bp.CardsNumberCal(page, "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='row headTableHolder']//div[1]//td[2]", "//div[@class='row headTableHolder']//div[1]//td[1]", "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[2]");
+        }
+
+        public async Task TotalPreOwnedCard(IPage page)
+        {
+            //For the Sum of Unit Values of cards.
+            Console.WriteLine("Total Pre-Owned Card \n Totatl Number of Unit Values of Total PreOwned Card");
+            await bp.TtlPreOwnedSummition(page, "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='saleStatSec']/div[6]//tbody[1]/tr[2]/td[1]/span[2]", "Assertion of Total Unit Values");
+            
+            //For the Sum of Tracking Numbers of Total Preowned Card
+            Console.WriteLine("Totatl Number of Tracking Values of Total PreOwned Card");
+            await bp.TtlPreOwnedSummition(page, "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[2]", "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[2]", "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[2]", "//div[@class='saleStatSec']/div[6]//tbody[1]/tr[2]/td[2]", "Assertion of Total Tracking Values");
+            
+            //For the Sum of Average Numbers of Total Preowned Card
+            Console.WriteLine("Totatl Number of Average Values of Total Preowned Card");
+            await bp.TtlPreOwnedSummition(page, "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[6]//tbody[1]/tr[2]/td[3]", "Assertion of Total Average Values");
+        }
+
+        public async Task GrandTotalCard(IPage page)
+        {
+            //For the Sum of Unit Values of cards.
+            Console.WriteLine("Grand Total \n Totatl Number of Unit Values of Grand Total Card");
+            await bp.GrandTotalCard(page, "//div[@class='saleStatSec']/div[2]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[1]/span[2]", "//div[@class='saleStatSec']/div[7]//tbody[1]/tr[2]/td[1]/span[2]","Assertion of Grand Total Unit Values");
+
+            //For the Sum of Tracking Numbers of Total Preowned Card
+            Console.WriteLine("Totatl Number of Tracking Values of  Grand Total Card");
+            await bp.GrandTotalCard(page, "//div[@class='saleStatSec']/div[2]//tbody[1]/tr[2]/td[2]", "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[2]", "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[2]", "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[2]", "//div[@class='saleStatSec']/div[7]//tbody[1]/tr[2]/td[2]", "Assertion of Grand Total Tracking Values");
+
+            //For the Sum of Average Numbers of Total Preowned Card
+            Console.WriteLine("Totatl Number of Average Values of  Grand Total Card");
+            await bp.GrandTotalCard(page, "//div[@class='saleStatSec']/div[2]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[3]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[4]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[5]//tbody[1]/tr[2]/td[3]", "//div[@class='saleStatSec']/div[7]//tbody[1]/tr[2]/td[3]","Assertion of Grand Total of Average Values");
+        }
+
+
+
+
         public async Task TotalTradeIn(IPage page)
         {
             await page.EvaluateAsync(@"window.scrollBy(0, 1000);");
