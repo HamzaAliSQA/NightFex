@@ -16,8 +16,10 @@ namespace NightFexDemo
     public class Basepage
     {
         public int num;
-        public decimal ExtractedNum;
 
+        Features features = new Features();
+
+        public decimal ExtractedNum;
 
         public async Task Goto(IPage page, string url)
         {
@@ -105,7 +107,7 @@ namespace NightFexDemo
             {
                 var actualText = await element.InnerTextAsync();
                 num = int.Parse(actualText);
-                //Console.WriteLine($"number: {num}");
+             
             }
 
         }
@@ -135,6 +137,7 @@ namespace NightFexDemo
                     if (textContent != null && textContent.Contains("No records found"))
                     {
                         noRecordsFound = true;
+                        Console.WriteLine("No Records Found");
                         break;
                     }
                 }
@@ -145,7 +148,7 @@ namespace NightFexDemo
 
                 else if (num > 0 && num <= 1000)
                 {
-                    await NumberAssertion(page,num,totalRows,stepdetails);
+                    await NumberAssertion(page, num, totalRows, stepdetails);
                     //Console.WriteLine($"{stepdetails} Number: {num} is equal to total number of rows: {totalRows}");
                 }
                 else if (num >= 1001 && num <= 20000)
@@ -156,6 +159,7 @@ namespace NightFexDemo
                     var nextPageRows = await page.QuerySelectorAllAsync(tableRowSelector);
                     int nextpagecount = nextPageRows.Count;
                     totalRows += nextpagecount;
+
                     await NumberAssertion(page, num, totalRows,stepdetails);
                 }
                 else
@@ -292,6 +296,7 @@ namespace NightFexDemo
                 Console.WriteLine($"Expected value: {expectedValue} matches the actual value: {actualValue}, {detail}");
                 //await extent.TakeScreenshot(page, Status.Pass, stepdetail); // Uncomment if using async context
             }
+
             else
             {
                 Assert.That(actualValue, Is.Not.EqualTo(expectedValue));
@@ -344,6 +349,7 @@ namespace NightFexDemo
             decimal actualTrackingNo = ExtractedNum;
             await AssertValues(actualTrackingNo, CalculatedTrackingNo,"Assertion of Tracking Values");
             
+
         }
         public async Task TtlPreOwnedSummition(IPage page,string CertifiedLoc,string NonCertLoc, string otherMakesNoLoc, string ttlPreOwnedNoLoc, string detail="" )
         {
@@ -354,6 +360,7 @@ namespace NightFexDemo
             await TextExtract(page, otherMakesNoLoc);
             decimal val3 = ExtractedNum;
             decimal calculatedSum = val1 + val2 + val3;
+
 
             await TextExtract(page, ttlPreOwnedNoLoc);
             decimal actualSum = ExtractedNum;
@@ -399,7 +406,8 @@ namespace NightFexDemo
             var trimmedText = actualText.Split('(', ')')[1].Trim();
             if (int.TryParse(trimmedText, out int num2))
             {
-                Console.WriteLine($"Total Value is: { trimmedText}");
+
+                Console.WriteLine($"Total Value is: {trimmedText}");
             }
             else
             {
@@ -413,5 +421,7 @@ namespace NightFexDemo
                 }
             }
         }
+       
     }
+    
 }
