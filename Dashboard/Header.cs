@@ -74,7 +74,7 @@ namespace NightFexDemo
            
             await bp.Click(page, "//div[@class ='pull-right pd-zero headNav']//ul[3]//li[10]//ul//li[10]//a//i", "Logout");
            
-            await bp.Assertion(page, "//div[@class ='pull-right pd-zero headNav']//ul[3]//li[10]//ul//li[10]//a//i", "Logout");
+            await bp.AssertValues<string>( "//div[@class ='pull-right pd-zero headNav']//ul[3]//li[10]//ul//li[10]//a//i", "Logout");
 
 
         }
